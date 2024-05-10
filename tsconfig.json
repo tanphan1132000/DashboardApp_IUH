@@ -1,3 +1,26 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@assets": ["assets"],
+      "@assets/*": ["assets/*"],
+      "@components": ["src/components"],
+      "@constants": ["src/constants"],
+      "@locales": ["src/locales"],
+      "@locales/*": ["src/locales/*"],
+      "@types": ["src/types"],
+      "@types/*": ["src/types/*"],
+      "@hooks": ["src/hooks"],
+      "@navigation": ["src/navigation"],
+      "@services": ["src/services"],
+      "@storage": ["src/storage"],
+      "@themes": ["src/themes"],
+      "@utils": ["src/utils"],
+      "@store": ["src/store"],
+      "@screens": ["src/screens"],
+      "@firebase": ["src/firebase"]
+    }
+  }
 }
