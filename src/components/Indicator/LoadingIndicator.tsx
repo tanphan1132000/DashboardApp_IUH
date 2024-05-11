@@ -1,7 +1,7 @@
 import {ThemeUtils} from '@themes';
 import {sizeNormalize} from '@utils';
 import React, {useEffect, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ColorValue, StyleSheet, View} from 'react-native';
 import Animated, {
   useSharedValue,
   withTiming,
@@ -19,7 +19,7 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 type LoadingIndicatorProps = {
   size?: 'sm' | 'md';
-  strokeColor?: string;
+  strokeColor?: ColorValue;
   strokeWidth?: number;
   duration?: number;
 };

@@ -8,29 +8,17 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {ThemeUtils} from '@themes';
 import {sizeNormalize} from '@utils';
-import {firebase_auth} from '@services';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {supabase} from '@services';
 
 export const SignUpScreen = () => {
-  const {goBack} = useNavigation();
+  const {goBack, setOptions} = useNavigation();
   const [loading, setLoading] = useState(false);
   const email = useRef<OutlinedTextFieldRef>(null);
   const password = useRef<OutlinedTextFieldRef>(null);
 
-  //   async function signInWithEmail() {
-  //     setLoading(true);
-  //     const {error} = await supabase.auth.signInWithPassword({
-  //       email: email,
-  //       password: password,
-  //     });
-
-  //     if (error) {
-  //       Alert.alert(error.message);
-  //     }
-  //     setLoading(false);
-  //   }
-
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setOptions({headerShown: true, title: 'Đăng nhập'});
+  }, [setOptions]);
 
   const signUpWithEmail = useCallback(async () => {
     if (!email.current?.value() || !password.current?.value()) {
@@ -39,14 +27,28 @@ export const SignUpScreen = () => {
       return;
     }
     setLoading(true);
-    const res = await createUserWithEmailAndPassword(
-      firebase_auth,
-      email.current.value(),
-      password.current.value(),
-    );
-    console.log(res);
+    const {
+      data: {session},
+      error,
+    } = await supabase.auth.signUp({
+      email: email.current.value() as string,
+      password: password.current.value() as string,
+    });
+
+    if (error) {
+      Alert.alert(error.message);
+    }
+    if (!session) {
+      Alert.alert('Vui lòng kiểm tra email để xác thực!', '', [
+        {
+          text: 'OK',
+          style: 'default',
+          onPress: goBack,
+        },
+      ]);
+    }
     setLoading(false);
-  }, []);
+  }, [goBack]);
 
   return (
     <View style={styles.container}>

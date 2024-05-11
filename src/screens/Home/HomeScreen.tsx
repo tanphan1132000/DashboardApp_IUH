@@ -2,6 +2,7 @@ import {View, StyleSheet, ScrollView, Text} from 'react-native';
 import React from 'react';
 import {Header} from './Header';
 import {sizeNormalize} from '@utils';
+import {ThemeUtils} from '@themes';
 
 export const HomeScreen = () => {
   return (
@@ -43,18 +44,17 @@ const styles = StyleSheet.create({
   chartFrame: {
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#1639c4',
+    borderColor: ThemeUtils.primary[900],
     height: 200,
   },
   chartHeader: {
     height: 40,
-    backgroundColor: '#1639c4',
+    backgroundColor: ThemeUtils.primary[900],
     justifyContent: 'center',
     paddingHorizontal: sizeNormalize(24),
   },
   chartTitle: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: 'white',
+    ...ThemeUtils.text_lg,
+    color: ThemeUtils.neutral[0],
   },
 });

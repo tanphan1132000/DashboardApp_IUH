@@ -1,27 +1,69 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React from 'react';
-import {OutlinedButton, OutlinedTextField, PrimaryButton} from '@components';
+import {View, Text, StyleSheet, Alert} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {
+  OutlinedButton,
+  OutlinedTextField,
+  OutlinedTextFieldRef,
+  PrimaryButton,
+} from '@components';
 import {sizeNormalize} from '@utils';
 import {useNavigation} from '@react-navigation/native';
 import {ThemeUtils} from '@themes';
+import {supabase} from '@services';
 
 export const LoginScreen = () => {
   const {navigate} = useNavigation();
+  const [loading, setLoading] = useState(false);
+  const email = useRef<OutlinedTextFieldRef>(null);
+  const password = useRef<OutlinedTextFieldRef>(null);
+
+  async function signInWithEmail() {
+    setLoading(true);
+    const {error} = await supabase.auth.signInWithPassword({
+      email: email.current?.value() as string,
+      password: password.current?.value() as string,
+    });
+
+    if (error) {
+      let message = '';
+      if (error.status === 400) {
+        message = 'Tài khoản không đúng';
+      }
+      Alert.alert(message);
+    } else {
+      navigate('Home');
+    }
+    setLoading(false);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.titleCont}>
         <Text style={styles.title}>DASHBOARD</Text>
       </View>
       <View style={styles.inputCont}>
-        <OutlinedTextField label="Tài khoản" placeholder="Nhập tài khoản" />
         <OutlinedTextField
+          _ref={email}
+          label="Email"
+          placeholder="Nhập email"
+        />
+        <OutlinedTextField
+          _ref={password}
           label="Mật khẩu"
           placeholder="Nhập mật khẩu"
           secureTextEntry={true}
         />
         <View style={styles.loginBtnCont}>
-          <PrimaryButton label="Đăng nhập" onPress={() => navigate('Home')} />
-          <OutlinedButton label="Đăng ký" onPress={() => navigate('SignUp')} />
+          <PrimaryButton
+            label="Đăng nhập"
+            onPress={signInWithEmail}
+            loading={loading}
+          />
+          <OutlinedButton
+            label="Đăng ký"
+            onPress={() => navigate('SignUp')}
+            loading={false}
+          />
         </View>
       </View>
     </View>

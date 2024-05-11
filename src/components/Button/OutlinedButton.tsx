@@ -1,24 +1,25 @@
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import React from 'react';
 import {sizeNormalize} from '@utils';
 import {ThemeUtils} from '@themes';
-import {LoadingIndicator} from '../Indicator';
+import {BaseButton} from './BaseButton';
 
 type Props = {
   label: string;
   onPress: () => void;
-  loading?: boolean;
+  loading: boolean;
 };
 
 export const OutlinedButton = ({label, onPress, loading}: Props) => {
   return (
-    <TouchableOpacity
-      style={styles.container}
+    <BaseButton
+      label={label}
       onPress={onPress}
-      activeOpacity={0.7}>
-      {loading && <LoadingIndicator strokeWidth={7} />}
-      <Text style={styles.label}>{label}</Text>
-    </TouchableOpacity>
+      buttonStyle={styles.container}
+      labelStyle={styles.label}
+      loading={loading}
+      indicatorColor={ThemeUtils.primary[900]}
+    />
   );
 };
 
