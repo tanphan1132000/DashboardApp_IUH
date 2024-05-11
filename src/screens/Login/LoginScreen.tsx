@@ -1,8 +1,9 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-import {OutlinedTextField, PrimaryButton} from '@components';
+import {OutlinedButton, OutlinedTextField, PrimaryButton} from '@components';
 import {sizeNormalize} from '@utils';
 import {useNavigation} from '@react-navigation/native';
+import {ThemeUtils} from '@themes';
 
 export const LoginScreen = () => {
   const {navigate} = useNavigation();
@@ -20,6 +21,7 @@ export const LoginScreen = () => {
         />
         <View style={styles.loginBtnCont}>
           <PrimaryButton label="Đăng nhập" onPress={() => navigate('Home')} />
+          <OutlinedButton label="Đăng ký" onPress={() => navigate('SignUp')} />
         </View>
       </View>
     </View>
@@ -36,9 +38,8 @@ const styles = StyleSheet.create({
   },
   titleCont: {},
   title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#1639c4',
+    ...ThemeUtils.text_h2,
+    color: ThemeUtils.primary[900],
   },
   inputCont: {
     width: '100%',
@@ -46,7 +47,9 @@ const styles = StyleSheet.create({
     gap: sizeNormalize(16),
   },
   loginBtnCont: {
-    alignItems: 'center',
+    flexDirection: 'row',
+    gap: sizeNormalize(16),
     paddingVertical: sizeNormalize(8),
+    justifyContent: 'center',
   },
 });

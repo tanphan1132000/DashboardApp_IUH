@@ -4,11 +4,7 @@ import {
   StackActions,
   createNavigationContainerRef,
 } from '@react-navigation/native';
-import {
-  CardStyleInterpolators,
-  HeaderStyleInterpolators,
-  createStackNavigator,
-} from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import {RootStackParamList, useRoutes} from './routes';
 
 export const rootNavigatorRef = createNavigationContainerRef();
@@ -57,8 +53,6 @@ export const RootNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
-          headerStyleInterpolator: HeaderStyleInterpolators.forFade,
         }}>
         <Stack.Screen
           name={ROUTES.login.name}
@@ -67,6 +61,10 @@ export const RootNavigator = () => {
         <Stack.Screen
           name={ROUTES.home.name}
           component={ROUTES.home.component}
+        />
+        <Stack.Screen
+          name={ROUTES.signup.name}
+          component={ROUTES.signup.component}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,20 +1,22 @@
-import {StyleSheet, Text} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {sizeNormalize} from '@utils';
 import {ThemeUtils} from '@themes';
+import {LoadingIndicator} from '../Indicator';
 
 type Props = {
   label: string;
   onPress: () => void;
+  loading?: boolean;
 };
 
-export const PrimaryButton = ({label, onPress}: Props) => {
+export const OutlinedButton = ({label, onPress, loading}: Props) => {
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={onPress}
       activeOpacity={0.7}>
+      {loading && <LoadingIndicator strokeWidth={7} />}
       <Text style={styles.label}>{label}</Text>
     </TouchableOpacity>
   );
@@ -22,16 +24,18 @@ export const PrimaryButton = ({label, onPress}: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: ThemeUtils.primary[900],
+    backgroundColor: ThemeUtils.neutral[0],
     paddingVertical: sizeNormalize(8),
     paddingHorizontal: sizeNormalize(16),
     ...ThemeUtils.rounded_md,
     alignItems: 'center',
     borderWidth: 1.5,
     borderColor: ThemeUtils.primary[900],
+    flexDirection: 'row',
+    gap: sizeNormalize(12),
   },
   label: {
     ...ThemeUtils.text_lg_semi_bold,
-    color: ThemeUtils.neutral[0],
+    color: ThemeUtils.primary[900],
   },
 });

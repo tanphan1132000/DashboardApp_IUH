@@ -1,4 +1,4 @@
-import {HomeScreen, LoginScreen} from '@screens';
+import {HomeScreen, LoginScreen, SignUpScreen} from '@screens';
 
 type ScreenComponent = {
   name: string;
@@ -8,10 +8,12 @@ type ScreenComponent = {
 export type RouteKeys = {
   login: ScreenComponent;
   home: ScreenComponent;
+  signup: ScreenComponent;
 };
 
 const LoginScreenName = 'Login';
 const HomeScreenName = 'Home';
+const SignUpScreenName = 'SignUp';
 
 export const useRoutes = () => {
   const ROUTES: RouteKeys = {
@@ -23,6 +25,10 @@ export const useRoutes = () => {
       name: HomeScreenName,
       component: HomeScreen,
     },
+    signup: {
+      name: SignUpScreenName,
+      component: SignUpScreen,
+    },
   };
 
   return ROUTES;
@@ -31,6 +37,7 @@ export const useRoutes = () => {
 export type RootStackParamList = {
   [LoginScreenName]: undefined;
   [HomeScreenName]: undefined;
+  [SignUpScreenName]: undefined;
 };
 
 declare global {
