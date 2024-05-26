@@ -25,7 +25,7 @@ export const LoginScreen = () => {
     });
 
     if (error) {
-      let message = '';
+      let message = 'Lỗi';
       if (error.status === 400) {
         message = 'Tài khoản không đúng';
       }
