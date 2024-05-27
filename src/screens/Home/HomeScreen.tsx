@@ -28,6 +28,7 @@ const ChartContainer = () => {
   const fetchFeed = useCallback(async () => {
     getFeed()
       .then(res => {
+        console.log(res);
         setRespone(res);
       })
       .catch((err: AxiosError) => {
@@ -52,6 +53,7 @@ const ChartContainer = () => {
         <>
           <TemperatureChart res={response} />
           <HumidityChart res={response} />
+          <SoilMoistureChart res={response} />
         </>
       ) : (
         <EmptyResponse />
@@ -92,12 +94,28 @@ const HumidityChart = ({res}: {res: Feed}) => {
   return <LineChartCustom label={timeCreated} data={data} title={field} />;
 };
 
+const SoilMoistureChart = ({res}: {res: Feed}) => {
+  const [field, setField] = useState('');
+  const [data, setData] = useState<number[]>([]);
+  const [timeCreated, setTimeCreated] = useState<string[]>([]);
+
+  useEffect(() => {
+    const newData = res.feeds.map(d => parseFloat(d.field3));
+    const times = res.feeds.map(d => formatTime(d.created_at));
+    setTimeCreated(times);
+    setData(newData);
+    setField(res.channel.field3);
+  }, [res]);
+
+  return <LineChartCustom label={timeCreated} data={data} title={field} />;
+};
+
 const EmptyResponse = () => {
   return (
     <View style={styles.emptyContainer}>
       <Text style={styles.emptyLabel}>Không có dữ liệu</Text>
       <View>
-        <LoadingIndicator strokeWidth={4} size="md" />
+        <LoadingIndicator strokeWidth={7} size="sm" />
       </View>
     </View>
   );
@@ -108,7 +126,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollViewContent: {
-    padding: sizeNormalize(16),
+    padding: sizeNormalize(8),
     gap: sizeNormalize(16),
   },
   emptyContainer: {

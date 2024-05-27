@@ -3,7 +3,7 @@ import {commonGet} from './axiosConfig';
 import {Feed} from '@types';
 
 export const getFeed = async () => {
-  const url = `/feeds.json?api_key=${API_KEY}&results=2`;
+  const url = `/feeds.json?api_key=${API_KEY}&results=5`;
   return await commonGet<Feed>(url);
 };
 

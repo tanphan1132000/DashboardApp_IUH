@@ -8,6 +8,7 @@ export type Channel = {
   description: string;
   field1: string;
   field2: string;
+  field3: string;
   id: number;
   last_entry_id: null;
   latitude: string;
@@ -21,4 +22,5 @@ export type Feeds = {
   entry_id: number;
   field1: string;
   field2: string;
+  field3: string;
 };
