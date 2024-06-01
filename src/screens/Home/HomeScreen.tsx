@@ -76,9 +76,19 @@ const EnviromentalParameters = ({res}: {res: Feed}) => {
   const humidityStyle = useMemo(() => {
     const v = Number(res.feeds[0].field2);
     if (v < 50) {
-      return styles.warningLabel;
-    } else if (v > 60) {
       return styles.dangerLabel;
+    } else if (v > 60) {
+      return styles.warningLabel;
+    }
+    return undefined;
+  }, [res]);
+
+  const soilMoistureStyle = useMemo(() => {
+    const v = Number(res.feeds[0].field3);
+    if (v < 45) {
+      return styles.dangerLabel;
+    } else if (v > 60) {
+      return styles.warningLabel;
     }
     return undefined;
   }, [res]);
@@ -101,7 +111,7 @@ const EnviromentalParameters = ({res}: {res: Feed}) => {
       <View style={styles.seperator} />
       <View style={styles.itemCtnr}>
         <Text style={styles.leadingLabel}>{res.channel.field3}</Text>
-        <Text style={styles.trailingLabel}>
+        <Text style={[styles.trailingLabel, soilMoistureStyle]}>
           {`${res.feeds[0].field3.trim()} %` || '-'}
         </Text>
       </View>
