@@ -39,7 +39,9 @@ export const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleCont}>
-        <Text style={styles.title}>DASHBOARD</Text>
+        <Text style={styles.title}>
+          hệ thống điều khiển và giám sát tưới nước
+        </Text>
       </View>
       <View style={styles.inputCont}>
         <OutlinedTextField
@@ -80,8 +82,10 @@ const styles = StyleSheet.create({
   },
   titleCont: {},
   title: {
-    ...ThemeUtils.text_h2,
+    ...ThemeUtils.text_h3,
     color: ThemeUtils.primary[900],
+    textTransform: 'uppercase',
+    textAlign: 'center',
   },
   inputCont: {
     width: '100%',
