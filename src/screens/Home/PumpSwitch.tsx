@@ -1,5 +1,5 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useMemo} from 'react';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
 import Animated, {
   useSharedValue,
   useDerivedValue,
@@ -10,6 +10,7 @@ import Animated, {
 import {ThemeUtils} from '@themes';
 import {sizeNormalize} from '@utils';
 import {Feed} from '@types';
+import {updatePumpStatus} from '@services';
 
 type Props = {
   res: Feed;
@@ -22,13 +23,19 @@ const inActiveColor = ThemeUtils.neutral[100];
 
 export const PumpSwitch = ({res}: Props) => {
   const translateX = useSharedValue(0);
+  const [state, setState] = useState(false);
 
-  const stateActive = useMemo(() => {
-    return Number(res.feeds[0].field4);
+  useEffect(() => {
+    const resState = Number(res.feeds[0].field4);
+    if (resState) {
+      setState(true);
+    } else {
+      setState(false);
+    }
   }, [res]);
 
   const progress = useDerivedValue(() => {
-    return withTiming(stateActive ? OFFSET : 0, {duration: DURATION});
+    return withTiming(state ? OFFSET : 0, {duration: DURATION});
   });
 
   const backgroundColorStyle = useAnimatedStyle(() => {
@@ -51,24 +58,40 @@ export const PumpSwitch = ({res}: Props) => {
   });
 
   useEffect(() => {
-    if (stateActive) {
+    if (state) {
       translateX.value = OFFSET;
     } else {
       translateX.value = 0;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stateActive]);
+  }, [state]);
+
+  const onPress = useCallback(async () => {
+    if (state) {
+      updatePumpStatus(0)
+        .then(_ => {
+          setState(false);
+        })
+        .catch(_ => {});
+    } else {
+      updatePumpStatus(1)
+        .then(_ => {
+          setState(true);
+        })
+        .catch(_ => {});
+    }
+  }, [state]);
 
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.title}>{res.channel.field4}</Text>
       </View>
-      <View>
+      <Pressable onPress={onPress}>
         <Animated.View style={[styles.backdrop, backgroundColorStyle]}>
           <Animated.View style={[styles.circle, translateStyle]} />
         </Animated.View>
-      </View>
+      </Pressable>
     </View>
   );
 };

@@ -98,21 +98,21 @@ const EnviromentalParameters = ({res}: {res: Feed}) => {
       <View style={styles.itemCtnr}>
         <Text style={styles.leadingLabel}>{res.channel.field1}</Text>
         <Text style={[styles.trailingLabel, tempStyle]}>
-          {`${res.feeds[0].field1.trim()} °C` || '-'}
+          {`${res.feeds[0].field1?.trim() || '-'} °C`}
         </Text>
       </View>
       <View style={styles.seperator} />
       <View style={styles.itemCtnr}>
         <Text style={styles.leadingLabel}>{res.channel.field2}</Text>
         <Text style={[styles.trailingLabel, humidityStyle]}>
-          {`${res.feeds[0].field2.trim()} %` || '-'}
+          {`${res.feeds[0].field2?.trim() || '-'} %`}
         </Text>
       </View>
       <View style={styles.seperator} />
       <View style={styles.itemCtnr}>
         <Text style={styles.leadingLabel}>{res.channel.field3}</Text>
         <Text style={[styles.trailingLabel, soilMoistureStyle]}>
-          {`${res.feeds[0].field3.trim()} %` || '-'}
+          {`${res.feeds[0].field3?.trim() || '-'} %`}
         </Text>
       </View>
     </View>

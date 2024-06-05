@@ -16,3 +16,8 @@ export const getStatusUpdate = async () => {
   const url = `/status.json?api_key=${API_KEY}`;
   return await commonGet(url);
 };
+
+export const updatePumpStatus = async (status: number) => {
+  const url = `https://api.thingspeak.com/update?api_key=DGSECGLF7VUBS3GN&field4=${status}`;
+  return await commonGet(url);
+};
