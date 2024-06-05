@@ -1,5 +1,5 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import Animated, {
   useSharedValue,
   useDerivedValue,
@@ -10,7 +10,6 @@ import Animated, {
 import {ThemeUtils} from '@themes';
 import {sizeNormalize} from '@utils';
 import {Feed} from '@types';
-import {updatePumpStatus} from '@services';
 
 type Props = {
   res: Feed;
@@ -33,6 +32,15 @@ export const PumpSwitch = ({res}: Props) => {
       setState(false);
     }
   }, [res]);
+
+  useEffect(() => {
+    if (state) {
+      translateX.value = OFFSET;
+    } else {
+      translateX.value = 0;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   const progress = useDerivedValue(() => {
     return withTiming(state ? OFFSET : 0, {duration: DURATION});
@@ -57,41 +65,32 @@ export const PumpSwitch = ({res}: Props) => {
     };
   });
 
-  useEffect(() => {
-    if (state) {
-      translateX.value = OFFSET;
-    } else {
-      translateX.value = 0;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
-
-  const onPress = useCallback(async () => {
-    if (state) {
-      updatePumpStatus(0)
-        .then(_ => {
-          setState(false);
-        })
-        .catch(_ => {});
-    } else {
-      updatePumpStatus(1)
-        .then(_ => {
-          setState(true);
-        })
-        .catch(_ => {});
-    }
-  }, [state]);
+  // const onPress = useCallback(async () => {
+  //   if (state) {
+  //     updatePumpStatus(0)
+  //       .then(_ => {
+  //         setState(false);
+  //       })
+  //       .catch(_ => {});
+  //   } else {
+  //     updatePumpStatus(1)
+  //       .then(_ => {
+  //         setState(true);
+  //       })
+  //       .catch(_ => {});
+  //   }
+  // }, [state]);
 
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.title}>{res.channel.field4}</Text>
       </View>
-      <Pressable onPress={onPress}>
+      <View>
         <Animated.View style={[styles.backdrop, backgroundColorStyle]}>
           <Animated.View style={[styles.circle, translateStyle]} />
         </Animated.View>
-      </Pressable>
+      </View>
     </View>
   );
 };
